@@ -1,3 +1,5 @@
 /* eslint-disable prettier/prettier */
 import ILLogo from './logo.svg';
-export {ILLogo};
+import ILGetStarted from './get-started.png';
+
+export {ILLogo, ILGetStarted};
