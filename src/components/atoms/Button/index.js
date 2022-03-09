@@ -1,26 +1,27 @@
-/* eslint-disable no-trailing-spaces *//* eslint-disable prettier/prettier */
+/* eslint-disable prettier/prettier */
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 const Button = ({type, title}) => {
   return (
-    <View style={styles.container(type)}>
+    <TouchableOpacity style={styles.container(type)}>
       <Text style={styles.text(type)}>{title}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
 export default Button;
 
 const styles = StyleSheet.create({
-  container: (type) => ({
+  container: type => ({
     backgroundColor: type === 'secondary' ? 'white' : '#0BCAD4',
     borderRadius: 10,
     paddingVertical: 10,
   }),
-  text:(type) => ({
-    fontSize: 18, 
-    fontFamily: 'Nunito-SemiBold', 
-    textAlign: 'center', 
-    color:  type === 'secondary' ? '#112340': 'white'}) ,
+  text: type => ({
+    fontSize: 18,
+    fontFamily: 'Nunito-SemiBold',
+    textAlign: 'center',
+    color: type === 'secondary' ? '#112340' : 'white',
+  }),
 });
