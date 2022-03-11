@@ -4,6 +4,7 @@ import React, {useEffect} from 'react';
 import {ILLogo} from '../../assets';
 
 const Splash = ({navigation}) => {
+  
   useEffect(() => {
     setTimeout(() => {
       navigation.replace('GetStarted')

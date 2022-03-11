@@ -1,10 +1,13 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
-import { ImageBackground, StyleSheet, Text, View } from 'react-native';
-import { ILGetStarted, ILLogo } from '../../assets';
-import { Button, Gap } from '../../components';
+import React, {useEffect} from 'react';
+import {ImageBackground, StyleSheet, Text, View, BackHandler, Alert} from 'react-native';
+import {ILGetStarted, ILLogo} from '../../assets';
+import {Button, Gap} from '../../components';
 
-const GetStarted = () => {
+const GetStarted = ({navigation}) => {
+
+  
+
   return (
     <ImageBackground source={ILGetStarted} style={styles.page}>
       <View>
@@ -15,9 +18,16 @@ const GetStarted = () => {
       </View>
 
       <View>
-        <Button title="Get Started" />
+        <Button
+          title="Get Started"
+          onPress={() => navigation.navigate('Register')}
+        />
         <Gap height={16} />
-        <Button title="Sign in" type="secondary" />
+        <Button
+          title="Sign in"
+          type="secondary"
+          onPress={() => navigation.navigate('Login')}
+        />
       </View>
     </ImageBackground>
   );
@@ -28,7 +38,6 @@ export default GetStarted;
 const styles = StyleSheet.create({
   page: {
     padding: 40,
-    backgroundColor: 'blue',
     flex: 1,
     justifyContent: 'space-between',
   },
