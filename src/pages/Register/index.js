@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, Gap, Header, Input} from '../../components';
-import {colors} from '../../utils';
+import {colors, fonts} from '../../utils';
 
 const Register = ({navigation}) => {
   return (
@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
     paddingTop: 0,
   },
   title: {
-    color: '#112340',
-    fontFamily: 'Nunito-SemiBold',
+    color: colors.text.primary,
+    fontFamily: fonts.primary[600],
     fontSize: 20,
     marginTop: 30,
     marginBottom: 40,

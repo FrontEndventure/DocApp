@@ -3,7 +3,7 @@ import React, {useEffect} from 'react';
 import {ImageBackground, StyleSheet, Text, View, BackHandler, Alert} from 'react-native';
 import {ILGetStarted, ILLogo} from '../../assets';
 import {Button, Gap} from '../../components';
-import { colors } from '../../utils';
+import { colors, fonts } from '../../utils';
 
 const GetStarted = ({navigation}) => {
 
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   },
   title: {
     marginTop: 91,
-    fontFamily: 'Nunito-SemiBold',
+    fontFamily: fonts.primary[600],
     fontSize: 28,
     color: colors.white,
   },
