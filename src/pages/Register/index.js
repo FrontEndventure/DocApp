@@ -1,13 +1,13 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Button, Gap, Header, Input } from '../../components';
-import { colors } from '../../utils';
+import {StyleSheet, View} from 'react-native';
+import {Button, Gap, Header, Input} from '../../components';
+import {colors} from '../../utils';
 
 const Register = ({navigation}) => {
   return (
     <View style={styles.page}>
       {/* <ILLogo /> */}
-      <Header />
+      <Header onPress={() => navigation.goBack()} title="Daftar Akun" />
       <View style={styles.content}>
         <Input label="Full Name" />
         <Gap height={24} />

@@ -3,6 +3,7 @@ import React, {useEffect} from 'react';
 import {ImageBackground, StyleSheet, Text, View, BackHandler, Alert} from 'react-native';
 import {ILGetStarted, ILLogo} from '../../assets';
 import {Button, Gap} from '../../components';
+import { colors } from '../../utils';
 
 const GetStarted = ({navigation}) => {
 
@@ -40,11 +41,12 @@ const styles = StyleSheet.create({
     padding: 40,
     flex: 1,
     justifyContent: 'space-between',
+    backgroundColor: colors.white
   },
   title: {
     marginTop: 91,
     fontFamily: 'Nunito-SemiBold',
     fontSize: 28,
-    color: '#FFFFFF',
+    color: colors.white,
   },
 });
