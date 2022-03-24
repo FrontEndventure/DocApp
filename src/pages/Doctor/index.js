@@ -65,7 +65,6 @@ const styles = StyleSheet.create({
   content: {
     backgroundColor: colors.white,
     flex: 1,
-    // paddingHorizontal: 16,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
   },
