@@ -3,14 +3,14 @@ import React from 'react';
 import {DummyHospital1} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
-const ListHospitals = () => {
+const ListHospitals = ({type, name, address, pic}) => {
   return (
     <View style={styles.container}>
-      <Image source={DummyHospital1} style={styles.picture} />
+      <Image source={pic} style={styles.picture} />
       <View>
-        <Text style={styles.title}>Rumah Sakit </Text>
-        <Text style={styles.title}>Citra Bunga Merdeka</Text>
-        <Text style={styles.addres}>Jln. Surya Sejahtera 20</Text>
+        <Text style={styles.title}>{type} </Text>
+        <Text style={styles.title}>{name}</Text>
+        <Text style={styles.addres}>{address}</Text>
       </View>
     </View>
   );

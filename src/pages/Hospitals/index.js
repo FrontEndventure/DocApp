@@ -1,8 +1,13 @@
-import {StyleSheet, Text, View, ImageBackground} from 'react-native';
 import React from 'react';
-import {ILHospital} from '../../assets';
-import {colors, fonts} from '../../utils';
+import {ImageBackground, StyleSheet, Text, View} from 'react-native';
+import {
+  DummyHospital1,
+  DummyHospital2,
+  DummyHospital3,
+  ILHospital,
+} from '../../assets';
 import {ListHospitals} from '../../components';
+import {colors, fonts} from '../../utils';
 
 const Hospitals = () => {
   return (
@@ -12,9 +17,24 @@ const Hospitals = () => {
         <Text style={styles.desc}>3 tersedia</Text>
       </ImageBackground>
       <View style={styles.content}>
-        <ListHospitals />
-        <ListHospitals />
-        <ListHospitals />
+        <ListHospitals
+          type="Rumah Sakit"
+          name="Citra Bunga Merdeka"
+          address="Jln. Surya Sejahtera 20"
+          pic={DummyHospital1}
+        />
+        <ListHospitals
+          type="Rumah Sakit Anak"
+          name="Happy Family Kids"
+          address="Jln. Surya Sejahtera 20"
+          pic={DummyHospital2}
+        />
+        <ListHospitals
+          type="Rumah Sakit Jiwa"
+          name="Tingkatan Paling Atas"
+          address="Jln. Surya Sejahtera 20"
+          pic={DummyHospital3}
+        />
       </View>
     </View>
   );
@@ -31,6 +51,7 @@ const styles = StyleSheet.create({
     height: 240,
     paddingTop: 30,
   },
+
   title: {
     fontFamily: fonts.primary[600],
     fontSize: 20,
