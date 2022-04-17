@@ -9,9 +9,9 @@ const Chatting = ({navigation}) => {
       <Header title="Nairobi Putri Hayza" type="dark-profile" />
       <View style={styles.content}>
         <Text style={styles.chatDate}>Senin, 15 April, 2022</Text>
+        <ChatItem isMe/>
         <ChatItem />
-        <ChatItem />
-        <ChatItem />
+        <ChatItem isMe/>
       </View>
 
       <InputChat />
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   page: {backgroundColor: colors.white, flex: 1},
   content: {
     flex: 1,
-    backgroundColor: 'yellow',
+    // backgroundColor: 'yellow',
   },
   chatDate: {
     fontSize: 11,
