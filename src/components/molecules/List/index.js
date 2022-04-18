@@ -1,12 +1,34 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import {IconNext} from '../../../assets';
+import {
+  IconEdiProfile,
+  IconHelp,
+  IconLanguage,
+  IconNext,
+  IconRate,
+} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
-const ListDoctor = ({profile, name, desc, type, onPress}) => {
+const List = ({profile, name, desc, type, onPress, icon}) => {
+  const Icon = () => {
+    if (icon === 'edit-profile') {
+      return <IconEdiProfile />;
+    }
+    if (icon === 'language') {
+      return <IconLanguage />;
+    }
+    if (icon === 'rate') {
+      return <IconRate />;
+    }
+    if (icon === 'help') {
+      return <IconHelp />;
+    }
+    return <IconEdiProfile />;
+  };
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      <Image source={profile} style={styles.avatar} />
+      {icon ? <Icon /> : <Image source={profile} style={styles.avatar} />}
+
       <View style={styles.content}>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.desc}>{desc}</Text>
@@ -16,7 +38,7 @@ const ListDoctor = ({profile, name, desc, type, onPress}) => {
   );
 };
 
-export default ListDoctor;
+export default List;
 
 const styles = StyleSheet.create({
   container: {
@@ -27,12 +49,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  content: {flex: 1},
+  content: {flex: 1, marginLeft: 16},
   avatar: {
     width: 46,
     height: 46,
     borderRadius: 46 / 2,
-    marginRight: 12,
   },
   name: {
     fontSize: 16,
