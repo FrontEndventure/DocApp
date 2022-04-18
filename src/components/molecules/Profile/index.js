@@ -1,16 +1,29 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
-import {DummyUser} from '../../../assets';
+import {DummyUser, IconRemovePhoto} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
-const Profile = () => {
+const Profile = ({name, desc, isRemove, onPress}) => {
   return (
     <View style={styles.container}>
-      <View style={styles.borderProfile}>
-        <Image style={styles.avatar} source={DummyUser} />
-      </View>
-      <Text style={styles.name}>M Taufik Hidayat</Text>
-      <Text style={styles.profesion}>Mobile Developer Expert</Text>
+      {!isRemove && (
+        <View style={styles.borderProfile}>
+          <Image style={styles.avatar} source={DummyUser} />
+        </View>
+      )}
+      {isRemove && (
+        <TouchableOpacity style={styles.borderProfile} onPress={onPress}>
+          <Image style={styles.avatar} source={DummyUser} />
+          {isRemove && <IconRemovePhoto style={styles.removePhoto} />}
+        </TouchableOpacity>
+      )}
+
+      {name && (
+        <View>
+          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.profesion}>{desc}</Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -49,5 +62,10 @@ const styles = StyleSheet.create({
     fontFamily: fonts.primary[600],
     color: colors.text.secondary,
     marginTop: 2,
+  },
+  removePhoto: {
+    position: 'absolute',
+    bottom: 8,
+    right: 8,
   },
 });

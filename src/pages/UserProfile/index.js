@@ -8,7 +8,7 @@ const UserProfile = ({navigation}) => {
     <View style={styles.page}>
       <Header title="Profile" />
       <Gap height={10} />
-      <Profile />
+      <Profile name={'Shayna Melinda'} desc="Product Designer" />
       <Gap height={14} />
 
       <List
@@ -16,6 +16,7 @@ const UserProfile = ({navigation}) => {
         desc="Last Update Yesterday"
         type="next"
         icon="edit-profile"
+        onPress={() => navigation.navigate('UpdateProfile')}
       />
       <List
         name="Edit Profile"

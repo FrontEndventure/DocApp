@@ -17,6 +17,8 @@ export const colors = {
   white: 'white',
   black: 'black',
   disable: mainColors.grey3,
+  border: mainColors.grey2,
+  cardLight: mainColors.green2,
   text: {
     primary: mainColors.dark1,
     secondary: mainColors.grey1,
@@ -34,6 +36,4 @@ export const colors = {
       text: mainColors.dark1,
     },
   },
-  border: mainColors.grey2,
-  cardLight: mainColors.green2,
 };
