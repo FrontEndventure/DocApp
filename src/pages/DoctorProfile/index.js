@@ -4,10 +4,10 @@ import {Button, Gap, Header, Profile} from '../../components';
 import ProfileItem from '../../components/molecules/ProfileItem';
 import {colors} from '../../utils';
 
-const DoctorProfile = () => {
+const DoctorProfile = ({navigation}) => {
   return (
     <View style={styles.page}>
-      <Header title={'Doctor Profile'} />
+      <Header title={'Doctor Profile'} onPress={() => navigation.goBack()} />
       <Profile name={'Alexa Rachel '} desc={'Dokter Anak'} />
       <Gap height={10} />
 
@@ -15,7 +15,10 @@ const DoctorProfile = () => {
       <ProfileItem label={'Tempat Praktik'} value={'Rumah Sakit Umum Bogor'} />
       <ProfileItem label={'No. STR'} value={'000134564798789'} />
       <View style={styles.action}>
-        <Button title={'Start Consultation'} />
+        <Button
+          title={'Start Consultation'}
+          onPress={() => navigation.navigate('Chatting')}
+        />
       </View>
     </View>
   );
@@ -25,8 +28,8 @@ export default DoctorProfile;
 
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: colors.white,
     flex: 1,
+    backgroundColor: colors.white,
   },
   action: {
     paddingHorizontal: 40,

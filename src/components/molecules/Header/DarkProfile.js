@@ -4,14 +4,10 @@ import {colors, fonts} from '../../../utils';
 import {DummyDoctor9} from '../../../assets';
 import {Button} from '../../atoms';
 
-const DarkProfile = ({navigation}) => {
+const DarkProfile = ({onPress}) => {
   return (
     <View style={styles.container}>
-      <Button
-        type="icon-only"
-        icon="back-light"
-        // onPress={() => navigation.goBack()}
-      />
+      <Button type="icon-only" icon="back-light" onPress={onPress} />
       <View style={styles.content}>
         <Text style={styles.name}>Nairobi Putri Hayza</Text>
         <Text style={styles.title}>Dokter Anak</Text>

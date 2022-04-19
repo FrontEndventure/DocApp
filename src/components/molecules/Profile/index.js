@@ -4,6 +4,7 @@ import {DummyUser, IconRemovePhoto} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
 const Profile = ({name, desc, isRemove, onPress}) => {
+  
   return (
     <View style={styles.container}>
       {!isRemove && (

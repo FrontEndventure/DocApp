@@ -22,7 +22,7 @@ const Login = ({navigation}) => {
         title="Crate New Account"
         size={16}
         align="center"
-        onPress={() => navigation.navigate('Register')}
+        onPress={() => navigation.replace('Register')}
       />
     </View>
   );

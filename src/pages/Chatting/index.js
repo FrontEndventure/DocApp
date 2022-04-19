@@ -6,12 +6,16 @@ import {colors, fonts} from '../../utils';
 const Chatting = ({navigation}) => {
   return (
     <View style={styles.page}>
-      <Header title="Nairobi Putri Hayza" type="dark-profile" />
+      <Header
+        title="Nairobi Putri Hayza"
+        type="dark-profile"
+        onPress={() => navigation.goBack()}
+      />
       <View style={styles.content}>
         <Text style={styles.chatDate}>Senin, 15 April, 2022</Text>
-        <ChatItem isMe/>
+        <ChatItem isMe />
         <ChatItem />
-        <ChatItem isMe/>
+        <ChatItem isMe />
       </View>
 
       <InputChat />
