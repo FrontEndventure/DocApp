@@ -1,15 +1,17 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, ScrollView} from 'react-native';
 import {Button, Gap, Header, Input} from '../../components';
 import {colors, fonts} from '../../utils';
 import UploadPhoto from '../UploadPhoto';
 
 const Register = ({navigation}) => {
+
   return (
     <View style={styles.page}>
       {/* <ILLogo /> */}
       <Header onPress={() => navigation.goBack()} title="Daftar Akun" />
       <View style={styles.content}>
+        <ScrollView showsVerticalScrollIndicator={false}>
         <Input label="Full Name" />
         <Gap height={24} />
         <Input label="Pekerjaan" />
@@ -19,6 +21,7 @@ const Register = ({navigation}) => {
         <Input label="Password" />
         <Gap height={40} />
         <Button title="Continue"  onPress={() => navigation.navigate(UploadPhoto)}/>
+        </ScrollView>
       </View>
     </View>
   );
