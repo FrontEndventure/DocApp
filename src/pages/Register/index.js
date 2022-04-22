@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
-import {StyleSheet, View, ScrollView} from 'react-native';
+import React from 'react';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {Button, Gap, Header, Input} from '../../components';
-import {colors, fonts} from '../../utils';
-import {useForm} from '../../utils';
-import UploadPhoto from '../UploadPhoto';
+import {Fire} from '../../config/Fire';
+import {colors, fonts, useForm} from '../../utils';
+import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth';
 
 const Register = ({navigation}) => {
   const [form, setForm] = useForm({
@@ -13,6 +13,20 @@ const Register = ({navigation}) => {
     password: '',
   });
   const onContinue = () => {
+    const auth = getAuth(Fire);
+    createUserWithEmailAndPassword(auth, form.email, form.password)
+      .then(success => {
+        // Signed in
+        // var user = userCredential.user;
+        console.log('data sukses register', success);
+        // ...
+      })
+      .catch(error => {
+        // const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log('error register: ', errorMessage);
+        // ..
+      });
     console.log(form);
     setForm('reset');
     // console.log(fullName, profession, email, password);
