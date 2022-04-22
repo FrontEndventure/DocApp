@@ -4,6 +4,7 @@ import {Button, Gap, Header, Input, Loading} from '../../components';
 import {Fire} from '../../config/Fire';
 import {colors, fonts, useForm} from '../../utils';
 import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 
 const Register = ({navigation}) => {
   const [form, setForm] = useForm({
@@ -26,6 +27,7 @@ const Register = ({navigation}) => {
         // Signed in
         // var user = userCredential.user;
         setLoading(false);
+        setForm('reset');
         console.log('data sukses register', success);
         // ...
       })
@@ -34,10 +36,14 @@ const Register = ({navigation}) => {
         const errorMessage = error.message;
         setLoading(false);
         console.log('error register: ', errorMessage);
+        showMessage({
+          message: errorMessage,
+          description: 'This is our second message',
+          type: 'danger',
+          color: colors.white,
+        });
         // ..
       });
-    setForm('reset');
-    // console.log(fullName, profession, email, password);
   };
   return (
     <>
