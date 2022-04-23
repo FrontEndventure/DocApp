@@ -4,7 +4,8 @@ import {Button, Gap, Header, Input, Loading} from '../../components';
 import {Fire} from '../../config/Fire';
 import {colors, fonts, useForm} from '../../utils';
 import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth';
-import {showMessage, hideMessage} from 'react-native-flash-message';
+import {showMessage} from 'react-native-flash-message';
+import {getDatabase, ref, set} from 'firebase/database';
 
 const Register = ({navigation}) => {
   const [form, setForm] = useForm({
@@ -21,15 +22,21 @@ const Register = ({navigation}) => {
 
     setLoading(true);
     //pake new pada getAuth() sebelumnya getAuth jadi new getAuth() sebagai async storage untuk menghindari warning
-    const auth = new getAuth(Fire);
+    const auth = getAuth(Fire);
+    const db = getDatabase(Fire);
     createUserWithEmailAndPassword(auth, form.email, form.password)
       .then(success => {
         // Signed in
         // var user = userCredential.user;
         setLoading(false);
         setForm('reset');
+        const data = {
+          name: form.fullName,
+          profession: form.profession,
+          email: form.email,
+        };
+        set(ref(db, 'users/' + success.user.uid + '/'), data);
         console.log('data sukses register', success);
-        // ...
       })
       .catch(error => {
         // const errorCode = error.code;

@@ -7,6 +7,7 @@ import {initializeApp} from 'firebase/app';
 const firebaseConfig = {
   apiKey: 'AIzaSyD5A4AVviPV2vy1QtnNTl-qM9Li-jI3RCQ',
   authDomain: 'docapp-01.firebaseapp.com',
+  databaseURL: 'https://docapp-01-default-rtdb.firebaseio.com/',
   projectId: 'docapp-01',
   storageBucket: 'docapp-01.appspot.com',
   messagingSenderId: '852616421218',
@@ -15,5 +16,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const Fire = initializeApp(firebaseConfig);
+// const database = getDatabase(Fire)
 
 export default Fire;
