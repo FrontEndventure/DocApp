@@ -1,27 +1,30 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
-import React from 'react';
+import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import React,  { useState } from 'react';
 import {Button, Gap, Header, Link} from '../../components';
 import {ILNullPhoto} from '../../assets/ilustration';
-import {IconAddPhoto} from '../../assets/icons';
+import {IconAddPhoto, IconRemovePhoto} from '../../assets/icons';
 import {colors, fonts} from '../../utils';
 
 const UploadPhoto = ({navigation}) => {
-  return (
+  const [hasPhoto, setHasPhoto] = useState(false);
+    return (
     <View style={styles.page}>
       <Header title="Upload Photo" onPress={() => navigation.goBack()} />
       <View style={styles.content}>
         <View style={styles.profile}>
-          <View style={styles.avatarWrapper}>
+          <TouchableOpacity style={styles.avatarWrapper}>
             <Image source={ILNullPhoto} style={styles.avatar} />
             {/* jika ambil data dari online  */}
             {/* <Image source={{uri:'url disini'}} /> */}
-            <IconAddPhoto style={styles.addPhoto} />
-          </View>
+            { hasPhoto && <IconRemovePhoto style={styles.addPhoto} />}
+            {!hasPhoto && <IconAddPhoto style={styles.addPhoto} />}            
+          </TouchableOpacity>
           <Text style={styles.name}>Shayna Melinda</Text>
           <Text style={styles.profession}>Product Designer</Text>
         </View>
         <View>
           <Button
+            disable
             title="Upload and Continue"
             onPress={() => navigation.replace('MainApp')}
           />
