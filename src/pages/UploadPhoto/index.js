@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {showMessage} from 'react-native-flash-message';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {IconAddPhoto, IconRemovePhoto} from '../../assets/icons';
 import {ILNullPhoto} from '../../assets/ilustration';
@@ -9,15 +10,20 @@ import {colors, fonts} from '../../utils';
 const UploadPhoto = ({navigation}) => {
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState(ILNullPhoto);
-  // const [disable, setDisable] = useState(true);
 
   const getImage = () => {
     launchImageLibrary({}, response => {
-      const source = {uri: response.assets[0].uri};
-      console.log(source);
-      setPhoto(source);
-      setHasPhoto(true);
-      // setDisable(false);
+      console.log('response: ', response);
+      if (response.didCancel || response.error) {
+        showMessage({
+          message: 'foto belum diupload',
+          type: 'danger',
+        });
+      } else {
+        const source = {uri: response.assets[0].uri};
+        setPhoto(source);
+        setHasPhoto(true);
+      }
     });
   };
   return (
