@@ -14,11 +14,13 @@ const UploadPhoto = ({navigation}) => {
   const getImage = () => {
     launchImageLibrary({}, response => {
       console.log('response: ', response);
-      if (response.didCancel || response.error) {
+      if (response.didCancel) {
         showMessage({
           message: 'foto belum diupload',
           type: 'danger',
         });
+        setPhoto(ILNullPhoto);
+        setHasPhoto(false);
       } else {
         const source = {uri: response.assets[0].uri};
         setPhoto(source);

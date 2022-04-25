@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {Button, Gap, Header, Input, Loading} from '../../components';
 import {Fire} from '../../config/Fire';
-import {colors, fonts, useForm} from '../../utils';
+import {colors, fonts, getData, storeData, useForm} from '../../utils';
 import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth';
 import {showMessage} from 'react-native-flash-message';
 import {getDatabase, ref, set} from 'firebase/database';
@@ -21,7 +21,6 @@ const Register = ({navigation}) => {
     console.log(form);
 
     setLoading(true);
-    //pake new pada getAuth() sebelumnya getAuth jadi new getAuth() sebagai async storage untuk menghindari warning
     const auth = getAuth(Fire);
     const db = getDatabase(Fire);
     createUserWithEmailAndPassword(auth, form.email, form.password)
@@ -36,6 +35,16 @@ const Register = ({navigation}) => {
           email: form.email,
         };
         set(ref(db, 'users/' + success.user.uid + '/'), data);
+
+        // input data ke localstorage
+        storeData('user', data);
+        navigation.navigate('UploadPhoto');
+        
+        // ambil data dari localstorage
+        // getData('user').then(res => {
+        //   console.log('data: ', res);
+        // });
+
         console.log('data sukses register', success);
       })
       .catch(error => {
