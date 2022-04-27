@@ -19,6 +19,12 @@ const Register = ({navigation}) => {
 
   const onContinue = () => {
     console.log(form);
+    // const data = {
+    //   fullName: form.fullName,
+    //   profession: form.profession,
+    //   email: form.email,
+    // };
+    // navigation.navigate('UploadPhoto', data);
 
     setLoading(true);
     const auth = getAuth(Fire);
@@ -30,22 +36,23 @@ const Register = ({navigation}) => {
         setLoading(false);
         setForm('reset');
         const data = {
-          name: form.fullName,
+          fullName: form.fullName,
           profession: form.profession,
           email: form.email,
         };
+
         set(ref(db, 'users/' + success.user.uid + '/'), data);
 
         // input data ke localstorage
         storeData('user', data);
-        navigation.navigate('UploadPhoto');
         
+        //pindah halaman ke page UploadPhoto bawa parameter data
+        navigation.navigate('UploadPhoto', data);
+        console.log('data sukses register', success);
         // ambil data dari localstorage
         // getData('user').then(res => {
         //   console.log('data: ', res);
         // });
-
-        console.log('data sukses register', success);
       })
       .catch(error => {
         // const errorCode = error.code;
