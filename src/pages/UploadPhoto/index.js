@@ -1,3 +1,4 @@
+import {getDatabase, ref, update} from 'firebase/database';
 import React, {useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {showMessage} from 'react-native-flash-message';
@@ -5,29 +6,72 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {IconAddPhoto, IconRemovePhoto} from '../../assets/icons';
 import {ILNullPhoto} from '../../assets/ilustration';
 import {Button, Gap, Header, Link} from '../../components';
-import {colors, fonts} from '../../utils';
+import {Fire} from '../../config/Fire';
+import {colors, fonts, storeData} from '../../utils';
 
 const UploadPhoto = ({navigation, route}) => {
-  const {fullName, profession} = route.params;
+  const {fullName, profession, uid} = route.params;
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState(ILNullPhoto);
+  const [photoForDB, setPhotoForDB] = useState('');
 
-  const getImage = () => {
-    launchImageLibrary({}, response => {
-      console.log('response: ', response);
-      if (response.didCancel) {
-        showMessage({
-          message: 'foto belum diupload',
-          type: 'danger',
-        });
-        setPhoto(ILNullPhoto);
-        setHasPhoto(false);
-      } else {
-        const source = {uri: response.assets[0].uri};
-        setPhoto(source);
-        setHasPhoto(true);
-      }
+  // const getImage = () => {
+  async function getImage() {
+    const result = await launchImageLibrary({
+      quality: 0.5,
+      includeBase64: true,
+      maxWidth: 200,
+      maxHeight: 200,
     });
+    // console.log('data image: ', result);
+
+    if (result.didCancel) {
+      showMessage({
+        message: 'foto belum diupload',
+        type: 'danger',
+      });
+      setPhoto(ILNullPhoto);
+      setHasPhoto(false);
+    } else {
+      // console.log('response getImage: ', result);
+      setPhotoForDB(
+        `data:${result.assets[0].type};base64, ${result.assets[0].base64}`,
+      );
+
+      const source = {uri: result.assets[0].uri};
+      setPhoto(source);
+      setHasPhoto(true);
+    }
+    // launchImageLibrary({}, response => {
+    //   console.log('response: ', response);
+    //   if (response.didCancel) {
+    //     showMessage({
+    //       message: 'foto belum diupload',
+    //       type: 'danger',
+    //     });
+    //     setPhoto(ILNullPhoto);
+    //     setHasPhoto(false);
+    //   } else {
+    //     console.log('response getImage: ', response);
+    //     const source = {uri: response.assets[0].uri};
+    //     setPhoto(source);
+    //     setHasPhoto(true);
+    //   }
+    // });
+  }
+
+  const uploadAndContinue = () => {
+    const db = getDatabase(Fire);
+    update(ref(db, 'users/' + uid + '/'), {photo: photoForDB});
+    const data = route.params;
+    data.photo = photoForDB;
+    // input data ke localstorage
+    storeData('user', data);
+
+    navigation.replace('MainApp');
+
+    // input data ke localstorage
+    // storeData('user', setPhotoForDB);
   };
   return (
     <View style={styles.page}>
@@ -48,7 +92,7 @@ const UploadPhoto = ({navigation, route}) => {
           <Button
             disable={!hasPhoto}
             title="Upload and Continue"
-            onPress={() => navigation.replace('MainApp')}
+            onPress={uploadAndContinue}
           />
 
           <Gap height={30} />

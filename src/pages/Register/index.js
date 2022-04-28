@@ -39,13 +39,14 @@ const Register = ({navigation}) => {
           fullName: form.fullName,
           profession: form.profession,
           email: form.email,
+          uid: success.user.uid,
         };
 
         set(ref(db, 'users/' + success.user.uid + '/'), data);
 
         // input data ke localstorage
         storeData('user', data);
-        
+
         //pindah halaman ke page UploadPhoto bawa parameter data
         navigation.navigate('UploadPhoto', data);
         console.log('data sukses register', success);
