@@ -24,7 +24,7 @@ const HomeProfile = ({onPress, route}) => {
       <Image source={profile.photo} style={styles.avatar} />
       <View>
         <Text style={styles.name}>{profile.fullName}</Text>
-        <Text>{profile.profession}</Text>
+        <Text style={styles.profesion}>{profile.profession}</Text>
       </View>
     </TouchableOpacity>
   );
