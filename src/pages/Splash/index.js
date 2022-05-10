@@ -3,11 +3,27 @@ import {StyleSheet, Text, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {ILLogo} from '../../assets';
 import {colors, fonts} from '../../utils';
+import {getAuth, onAuthStateChanged} from 'firebase/auth';
 
 const Splash = ({navigation}) => {
+  const auth = getAuth();
   useEffect(() => {
     setTimeout(() => {
-      navigation.replace('GetStarted');
+      onAuthStateChanged(auth, user => {
+        if (user) {
+          // User is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/firebase.User
+          console.log('user: ', user);
+          const uid = user.uid;
+          // ...
+          navigation.replace('MainApp');
+
+        } else {
+          // User is signed out
+          // ...
+          navigation.replace('GetStarted');
+        }
+      });
     }, 3000);
   }, []);
 

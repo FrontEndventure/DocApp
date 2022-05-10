@@ -22,7 +22,7 @@ const Login = ({navigation}) => {
     signInWithEmailAndPassword(auth, form.email, form.password)
       .then(res => {
         setLoading(false);
-        // setForm('reset');
+        setForm('reset');
         // console.log('form: ', res);
         get(child(dbRef, `users/${res.user.uid}`)).then(resDB => {
           if (resDB.exists()) {
