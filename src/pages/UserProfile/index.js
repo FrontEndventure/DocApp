@@ -14,8 +14,8 @@ const UserProfile = ({navigation}) => {
     getData('user').then(res => {
       const data = res;
       data.photo = {uri: res.photo};
-      console.log('new profile: ', data);
-      setProfile(res);
+      // console.log('new profile: ', data);
+      setProfile(data);
     });
   }, []);
 
@@ -25,7 +25,11 @@ const UserProfile = ({navigation}) => {
       <Gap height={10} />
 
       {profile.fullName.length > 0 && (
-        <Profile name={profile.fullName} desc={profile.profession} photo={profile.photo} />
+        <Profile
+          name={profile.fullName}
+          desc={profile.profession}
+          photo={profile.photo}
+        />
       )}
       <Gap height={14} />
 
