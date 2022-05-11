@@ -5,6 +5,8 @@ import {colors, getData, storeData} from '../../utils';
 import {ILNullPhoto} from '../../assets';
 import {getDatabase, ref, child, get, update} from 'firebase/database';
 import {Fire} from '../../config/Fire';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {showMessage} from 'react-native-flash-message';
 
 const UpdateProfile = ({navigation}) => {
   const [profile, setProfile] = useState({
@@ -13,34 +15,52 @@ const UpdateProfile = ({navigation}) => {
     profession: '',
     email: '',
   });
+  const [photoForDB, setPhotoForDB] = useState('');
+  const [photo, setPhoto] = useState(ILNullPhoto);
+  // const [hasPhoto, setHasPhoto] = useState(false);
 
   const [password, setPassword] = useState('');
   useEffect(() => {
     getData('user').then(res => {
       const data = res;
-      data.photo = {uri: res.photo};
-      // console.log('new profile: ', data);
+      setPhoto({uri: res.photo});
       setProfile(data);
     });
   }, []);
 
+  async function getImage() {
+    const result = await launchImageLibrary({
+      quality: 0.5,
+      includeBase64: true,
+      maxWidth: 200,
+      maxHeight: 200,
+    });
+
+    if (result.didCancel) {
+      showMessage({
+        message: 'foto belum diupload',
+        type: 'danger',
+      });
+      setPhoto(ILNullPhoto);
+    } else {
+      setPhotoForDB(
+        `data:${result.assets[0].type};base64, ${result.assets[0].base64}`,
+      );
+
+      const source = {uri: result.assets[0].uri};
+      setPhoto(source);
+    }
+  }
+
   const updateData = () => {
-    const updates = {};
-    // updates['users/' + profile.uid + '/'] = profile;
     const db = getDatabase(Fire);
     const data = profile;
-    data.photo = profile.photo.uri;
-    update(ref(db, 'users/' + profile.uid + '/'), profile)
-      // .then(() => {
-      //   console.log('success: ');
-      // })
-      // .catch(err => {
-      //   console.log('error: ', err);
-      // });
-
-    console.log('new user: ', profile);
-
-    // storeData('user', profile);
+    data.photo = photoForDB;
+    update(ref(db, 'users/' + profile.uid + '/'), data).then(() => {
+      console.log('success: ', data);
+      storeData('user', data);
+    });
+    // console.log('data baru: ', data);
   };
 
   const changeText = (key, value) => {
@@ -54,11 +74,7 @@ const UpdateProfile = ({navigation}) => {
       <Header title="Edit Profile" onPress={() => navigation.goBack()} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
-          <Profile
-            isRemove
-            photo={profile.photo}
-            onPress={() => alert('Ganti Poto')}
-          />
+          <Profile isRemove photo={photo} onPress={getImage} />
           <Gap height={26} />
           <Input
             label={'Full Name'}

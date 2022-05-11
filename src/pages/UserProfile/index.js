@@ -10,6 +10,8 @@ const UserProfile = ({navigation}) => {
     fullName: '',
     profession: '',
   });
+
+  
   useEffect(() => {
     getData('user').then(res => {
       const data = res;
@@ -18,6 +20,8 @@ const UserProfile = ({navigation}) => {
       setProfile(data);
     });
   }, []);
+
+
 
   return (
     <View style={styles.page}>
