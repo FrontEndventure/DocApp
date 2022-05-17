@@ -3,6 +3,8 @@ import {StyleSheet, Text, View} from 'react-native';
 import {ILNullPhoto} from '../../assets';
 import {Gap, Header, List, Profile} from '../../components';
 import {colors, fonts, getData} from '../../utils';
+import {getAuth, signOut} from 'firebase/auth';
+import {showMessage} from 'react-native-flash-message';
 
 const UserProfile = ({navigation}) => {
   const [profile, setProfile] = useState({
@@ -11,7 +13,6 @@ const UserProfile = ({navigation}) => {
     profession: '',
   });
 
-  
   useEffect(() => {
     getData('user').then(res => {
       const data = res;
@@ -21,7 +22,24 @@ const UserProfile = ({navigation}) => {
     });
   }, []);
 
-
+  const logOut = () => {
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        showMessage({
+          message: 'logout',
+          type: 'warning',
+        });
+      })
+      .catch(error => {
+        // An error happened.
+        showMessage({
+          message: error,
+          type: 'danger',
+        });
+      });
+  };
 
   return (
     <View style={styles.page}>
@@ -61,6 +79,7 @@ const UserProfile = ({navigation}) => {
         desc="Last Update Yesterday"
         type="next"
         icon="help"
+        onPress={logOut}
       />
     </View>
   );

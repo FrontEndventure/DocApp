@@ -16,7 +16,8 @@ const Splash = ({navigation}) => {
           // console.log('user: ', user);
           // const uid = user.uid;
           // ...
-          navigation.replace('MainApp');
+          // navigation.replace('MainApp');
+          navigation.replace('GetStarted');
 
         } else {
           // User is signed out
