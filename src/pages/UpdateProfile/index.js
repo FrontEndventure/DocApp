@@ -1,13 +1,12 @@
+import {getAuth, onAuthStateChanged, updatePassword} from 'firebase/auth';
+import {getDatabase, ref, update} from 'firebase/database';
 import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {Button, Gap, Header, Input, Profile} from '../../components';
-import {colors, getData, storeData} from '../../utils';
-import {ILNullPhoto} from '../../assets';
-import {getDatabase, ref, child, get, update} from 'firebase/database';
-import {Fire} from '../../config/Fire';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {showMessage} from 'react-native-flash-message';
-import {getAuth, onAuthStateChanged, updatePassword} from 'firebase/auth';
+import {ILNullPhoto} from '../../assets';
+import {Button, Gap, Header, Input, Profile} from '../../components';
+import {Fire} from '../../config/Fire';
+import {colors, getData, showError, showSuccess, storeData} from '../../utils';
 
 const UpdateProfile = ({navigation}) => {
   const [profile, setProfile] = useState({
@@ -42,10 +41,7 @@ const UpdateProfile = ({navigation}) => {
       },
       response => {
         if (response.didCancel || response.error) {
-          showMessage({
-            message: 'anda tidak memilih foto ',
-            type: 'danger',
-          });
+          showError(response.error);
           // setPhoto(ILNullPhoto);
         } else {
           const source = photo ? {uri: response.assets[0].uri} : ILNullPhoto;
@@ -60,7 +56,7 @@ const UpdateProfile = ({navigation}) => {
   };
 
   const updatePasswordData = () => {
-    console.log('ini password: ', password);
+    // console.log('ini password: ', password);
     const auth = getAuth(Fire);
     onAuthStateChanged(auth, user => {
       if (user) {
@@ -83,34 +79,24 @@ const UpdateProfile = ({navigation}) => {
     const data = profile;
     data.photo = photoForDB;
     update(ref(db, `users/${profile.uid}/`), data).then(() => {
-      // console.log('success: ', data);
       storeData('user', data);
-      console.log('ini data local storage: ', data);
+      // console.log('ini data local storage: ', data);
     });
   };
 
   const updateData = () => {
     if (password.length > 0) {
       if (password.length < 6) {
-        showMessage({
-          message: 'password kurang dari 6',
-          type: 'danger',
-        });
+        showError('Password kurang dari 6');
       } else {
         updatePasswordData();
         updateProfileData();
-        showMessage({
-          message: 'data dan password berhasil diperbaharui',
-          type: 'success',
-        });
+        showSuccess('data dan password berhasil diperbaharui');
         navigation.replace('MainApp');
       }
     } else {
       updateProfileData();
-      showMessage({
-        message: 'data berhasil diperbaharui',
-        type: 'success',
-      });
+      showSuccess('data berhasil diperbaharui');
       navigation.replace('MainApp');
     }
     // const db = getDatabase(Fire);

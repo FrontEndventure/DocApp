@@ -1,13 +1,12 @@
 import {getDatabase, ref, update} from 'firebase/database';
 import React, {useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {showMessage} from 'react-native-flash-message';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {IconAddPhoto, IconRemovePhoto} from '../../assets/icons';
 import {ILNullPhoto} from '../../assets/ilustration';
 import {Button, Gap, Header, Link} from '../../components';
 import {Fire} from '../../config/Fire';
-import {colors, fonts, storeData} from '../../utils';
+import {colors, fonts, showError, storeData} from '../../utils';
 
 const UploadPhoto = ({navigation, route}) => {
   const {fullName, profession, uid} = route.params;
@@ -26,10 +25,7 @@ const UploadPhoto = ({navigation, route}) => {
     // console.log('data image: ', result);
 
     if (result.didCancel) {
-      showMessage({
-        message: 'foto belum diupload',
-        type: 'danger',
-      });
+      showError('foto belum diupload');
       setPhoto(ILNullPhoto);
       setHasPhoto(false);
     } else {

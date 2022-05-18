@@ -1,11 +1,15 @@
-import React, {useState} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
-import {Button, Gap, Header, Input, Loading} from '../../components';
-import {Fire} from '../../config/Fire';
-import {colors, fonts, getData, storeData, useForm} from '../../utils';
-import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth';
-import {showMessage} from 'react-native-flash-message';
-import {getDatabase, ref, set} from 'firebase/database';
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { getDatabase, ref, set } from 'firebase/database';
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { Button, Gap, Header, Input, Loading } from '../../components';
+import { Fire } from '../../config/Fire';
+import {
+  colors,
+  fonts, showError,
+  storeData,
+  useForm
+} from '../../utils';
 
 const Register = ({navigation}) => {
   const [form, setForm] = useForm({
@@ -60,12 +64,7 @@ const Register = ({navigation}) => {
         const errorMessage = error.message;
         setLoading(false);
         console.log('error register: ', errorMessage);
-        showMessage({
-          message: errorMessage,
-          description: 'This is our second message',
-          type: 'danger',
-          color: colors.white,
-        });
+        showError(errorMessage);
         // ..
       });
   };

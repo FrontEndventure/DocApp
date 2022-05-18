@@ -1,10 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {ILNullPhoto} from '../../assets';
-import {Gap, Header, List, Profile} from '../../components';
-import {colors, fonts, getData} from '../../utils';
-import {getAuth, signOut} from 'firebase/auth';
-import {showMessage} from 'react-native-flash-message';
+import { getAuth, signOut } from 'firebase/auth';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { ILNullPhoto } from '../../assets';
+import { Gap, Header, List, Profile } from '../../components';
+import { getData, showError } from '../../utils';
 
 const UserProfile = ({navigation}) => {
   const [profile, setProfile] = useState({
@@ -27,17 +26,11 @@ const UserProfile = ({navigation}) => {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
-        showMessage({
-          message: 'logout',
-          type: 'warning',
-        });
+        showError('logout berhasil');
       })
       .catch(error => {
         // An error happened.
-        showMessage({
-          message: error,
-          type: 'danger',
-        });
+        showError(error);
       });
   };
 
