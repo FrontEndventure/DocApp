@@ -2,11 +2,20 @@ import {createStore} from 'redux';
 
 const initialState = {
   loading: false,
+  name: 'Moohat Taufik',
+  address: 'dayeuh',
 };
 
 const reducer = (state = initialState, action) => {
+  if (action.type === 'SET_LOADING') {
+    return {
+      ...state,
+      loading: action.value,
+    };
+  }
   return state;
 };
 
-const store = createStore();
+const store = createStore(reducer);
+
 export default store;

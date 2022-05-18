@@ -7,6 +7,7 @@ import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 import {Fire} from '../../config/Fire';
 import {getDatabase, ref, child, get} from 'firebase/database';
 import {showMessage} from 'react-native-flash-message';
+import {useDispatch} from 'react-redux';
 
 const Login = ({navigation}) => {
   const [form, setForm] = useForm({
@@ -15,13 +16,22 @@ const Login = ({navigation}) => {
   });
   const [loading, setLoading] = useState(false);
 
+  //untuk merubah reducer pake dispatch
+  const dispatch = useDispatch();
+
   const login = () => {
-    setLoading(true);
+    dispatch({
+      type: 'SET_LOADING',
+      value: true,
+    });
     const auth = getAuth(Fire);
     const dbRef = ref(getDatabase(Fire));
     signInWithEmailAndPassword(auth, form.email, form.password)
       .then(res => {
-        setLoading(false);
+        dispatch({
+          type: 'SET_LOADING',
+          value: false,
+        });
         setForm('reset');
         // console.log('form: ', res);
         get(child(dbRef, `users/${res.user.uid}`)).then(resDB => {
@@ -36,7 +46,10 @@ const Login = ({navigation}) => {
       })
 
       .catch(error => {
-        setLoading(false);
+        dispatch({
+          type: 'SET_LOADING',
+          value: false,
+        });
 
         // const errorCode = error.code;
         const errorMessage = error.message;
@@ -51,8 +64,14 @@ const Login = ({navigation}) => {
       });
   };
 
+  const showLoadingTemp = () => {
+    dispatch({
+      type: 'SET_LOADING',
+      value: true,
+    });
+  };
+
   return (
-    <>
       <View style={styles.page}>
         <ScrollView showsHorizontalScrollIndicator={false}>
           <Gap height={40} />
@@ -81,12 +100,11 @@ const Login = ({navigation}) => {
             title="Crate New Account"
             size={16}
             align="center"
-            onPress={() => navigation.replace('Register')}
+            // onPress={() => navigation.replace('Register')}
+            onPress={showLoadingTemp}
           />
         </ScrollView>
       </View>
-      {loading && <Loading />}
-    </>
   );
 };
 

@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import {ImageBackground, StyleSheet, Text, View} from 'react-native';
+import {useSelector} from 'react-redux';
 import {ILGetStarted, ILLogo} from '../../assets';
 import {Button, Gap} from '../../components';
 import {colors, fonts} from '../../utils';
