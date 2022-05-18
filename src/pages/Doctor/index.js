@@ -1,20 +1,35 @@
-import {StyleSheet, Text, View, ScrollView} from 'react-native';
-import React, {useEffect} from 'react';
+import { child, get, getDatabase, ref } from 'firebase/database';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { DummyDoctor1, JSONCategoryDoctor } from '../../assets';
 import {
   DoctorCategory,
   Gap,
   HomeProfile,
   NewsItem,
-  RatedDoctor,
+  RatedDoctor
 } from '../../components';
-import {colors, fonts, getData} from '../../utils';
-import {DummyDoctor1, JSONCategoryDoctor} from '../../assets';
+import { colors, fonts } from '../../utils';
 
 const Doctor = ({navigation}) => {
+  const [news, setNews] = useState([]);
+  const dbRef = ref(getDatabase());
+
   useEffect(() => {
-    getData('user').then(res => {
-      // console.log('data user: ', res);
-    });
+    get(child(dbRef, `news/`))
+      .then(res => {
+        if (res.exists()) {
+          // console.log('ini data: ', res.val());
+          if (res.val()) {
+            setNews(res.val());
+          }
+        } else {
+          console.log('No data available');
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }, []);
 
   return (
@@ -67,11 +82,17 @@ const Doctor = ({navigation}) => {
               onPress={() => navigation.navigate('DoctorProfile')}
             />
             <Text style={styles.sectionLabel}>Good News</Text>
-            <NewsItem />
-            <NewsItem />
-            <NewsItem />
-            <NewsItem />
           </View>
+          {news.map(item => {
+            return (
+              <NewsItem
+                key={item.id}
+                title={item.title}
+                image={item.image}
+                date={item.date}
+              />
+            );
+          })}
 
           <Gap height={30} />
         </ScrollView>

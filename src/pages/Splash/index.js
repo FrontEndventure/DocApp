@@ -11,22 +11,13 @@ const Splash = ({navigation}) => {
     setTimeout(() => {
       onAuthStateChanged(auth, user => {
         if (user) {
-          // User is signed in, see docs for a list of available properties
-          // https://firebase.google.com/docs/reference/js/firebase.User
-          // console.log('user: ', user);
-          // const uid = user.uid;
-          // ...
-          // navigation.replace('MainApp');
-          navigation.replace('GetStarted');
-
+          navigation.replace('MainApp');
         } else {
-          // User is signed out
-          // ...
           navigation.replace('GetStarted');
         }
       });
     }, 3000);
-  }, []);
+  }, [navigation]);
 
   return (
     <View style={styles.page}>

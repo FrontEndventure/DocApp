@@ -3,10 +3,10 @@ import React from 'react';
 import {DummyHospital1} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
-const ListHospitals = ({type, name, address, pic}) => {
+const ListHospitals = ({type, name, address, image}) => {
   return (
     <View style={styles.container}>
-      <Image source={pic} style={styles.picture} />
+      <Image source={{uri: image}} style={styles.picture} />
       <View>
         <Text style={styles.title}>{type} </Text>
         <Text style={styles.title}>{name}</Text>
