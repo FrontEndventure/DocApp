@@ -1,22 +1,23 @@
-import { child, get, getDatabase, ref } from 'firebase/database';
-import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { DummyDoctor1, JSONCategoryDoctor } from '../../assets';
+import {child, get, getDatabase, ref} from 'firebase/database';
+import React, {useEffect, useState} from 'react';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {DummyDoctor1, JSONCategoryDoctor} from '../../assets';
 import {
   DoctorCategory,
   Gap,
   HomeProfile,
   NewsItem,
-  RatedDoctor
+  RatedDoctor,
 } from '../../components';
-import { colors, fonts } from '../../utils';
+import {colors, fonts} from '../../utils';
 
 const Doctor = ({navigation}) => {
   const [news, setNews] = useState([]);
+  const [categoryDoctor, setCategoryDoctor] = useState([]);
   const dbRef = ref(getDatabase());
 
-  useEffect(() => {
-    get(child(dbRef, `news/`))
+  const getDataNews = param => {
+    get(child(dbRef, `${param}/`))
       .then(res => {
         if (res.exists()) {
           // console.log('ini data: ', res.val());
@@ -30,6 +31,30 @@ const Doctor = ({navigation}) => {
       .catch(error => {
         console.error(error);
       });
+  };
+
+  const getDataCategoryDoctor = () => {
+    get(child(dbRef, `category_doctor/`))
+      .then(res => {
+        if (res.exists()) {
+          console.log('ini data: ', res.val().data);
+          if (res.val()) {
+            setCategoryDoctor(res.val().data);
+          }
+        } else {
+          console.log('No data available');
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
+  useEffect(() => {
+    //using parameter
+    getDataNews('news');
+    //without parameter
+    getDataCategoryDoctor();
   }, []);
 
   return (
@@ -47,7 +72,7 @@ const Doctor = ({navigation}) => {
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View style={styles.category}>
                 <Gap width={32} />
-                {JSONCategoryDoctor.data.map(item => {
+                {categoryDoctor.map(item => {
                   return (
                     <DoctorCategory
                       key={item.id}
