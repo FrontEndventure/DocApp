@@ -1,4 +1,12 @@
-import {child, get, getDatabase, ref} from 'firebase/database';
+import {
+  child,
+  get,
+  getDatabase,
+  ref,
+  orderByChild,
+  query,
+  limitToLast,
+} from 'firebase/database';
 import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {DummyDoctor1, JSONCategoryDoctor} from '../../assets';
@@ -14,7 +22,50 @@ import {colors, fonts} from '../../utils';
 const Doctor = ({navigation}) => {
   const [news, setNews] = useState([]);
   const [categoryDoctor, setCategoryDoctor] = useState([]);
+  const [doctors, setDoctors] = useState([]);
   const dbRef = ref(getDatabase());
+
+  useEffect(() => {
+    //using parameter
+    getDataNews('news');
+    //without parameter
+    getDataCategoryDoctor();
+    getTopRatedDoctors();
+  }, []);
+
+  //parsing object to array
+  const parseArray = listObject => {
+    const data = [];
+    Object.keys(listObject).map(key => {
+      data.push({
+        id: key,
+        data: listObject[key],
+      });
+    });
+    return data;
+  };
+  const getTopRatedDoctors = () => {
+    const db = getDatabase();
+    //craate variable first
+    const topRatedDoctors = query(ref(db, 'doctors/'));
+    //get data
+    get(topRatedDoctors, orderByChild('rate'), limitToLast(3))
+      .then(res => {
+        if (res.exists()) {
+          console.log('rated doctor: ', res.val());
+          if (res.val()) {
+            const data = parseArray(res.val());
+            console.log('data hasil parse: ', data);
+            setDoctors(data);
+          }
+        } else {
+          console.log('No data available');
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
 
   const getDataNews = param => {
     get(child(dbRef, `${param}/`))
@@ -37,7 +88,7 @@ const Doctor = ({navigation}) => {
     get(child(dbRef, `category_doctor/`))
       .then(res => {
         if (res.exists()) {
-          console.log('ini data: ', res.val().data);
+          // console.log('ini data: ', res.val().data);
           if (res.val()) {
             setCategoryDoctor(res.val().data);
           }
@@ -49,13 +100,6 @@ const Doctor = ({navigation}) => {
         console.error(error);
       });
   };
-
-  useEffect(() => {
-    //using parameter
-    getDataNews('news');
-    //without parameter
-    getDataCategoryDoctor();
-  }, []);
 
   return (
     <View style={styles.page}>
@@ -88,24 +132,17 @@ const Doctor = ({navigation}) => {
           </View>
           <View style={styles.wrapperSection}>
             <Text style={styles.sectionLabel}>Top Rated Doctors</Text>
-            <RatedDoctor
-              name="Alexa Rachel"
-              desc="Dokter Anak"
-              avatar={DummyDoctor1}
-              onPress={() => navigation.navigate('DoctorProfile')}
-            />
-            <RatedDoctor
-              name="Alexa Rachel"
-              desc="Dokter Anak"
-              avatar={DummyDoctor1}
-              onPress={() => navigation.navigate('DoctorProfile')}
-            />
-            <RatedDoctor
-              name="Alexa Rachel"
-              desc="Dokter Anak"
-              avatar={DummyDoctor1}
-              onPress={() => navigation.navigate('DoctorProfile')}
-            />
+            {doctors.map(doctor => {
+              return (
+                <RatedDoctor
+                  key={doctor.id}
+                  name={doctor.data.fullName}
+                  desc={doctor.data.profession}
+                  avatar={{uri: doctor.data.photo}}
+                  onPress={() => navigation.navigate('DoctorProfile')}
+                />
+              );
+            })}
             <Text style={styles.sectionLabel}>Good News</Text>
           </View>
           {news.map(item => {
