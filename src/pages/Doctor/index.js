@@ -52,10 +52,10 @@ const Doctor = ({navigation}) => {
     get(topRatedDoctors, orderByChild('rate'), limitToLast(3))
       .then(res => {
         if (res.exists()) {
-          console.log('rated doctor: ', res.val());
+          // console.log('rated doctor: ', res.val());
           if (res.val()) {
             const data = parseArray(res.val());
-            console.log('data hasil parse: ', data);
+            // console.log('data hasil parse Rated Doctor: ', data);
             setDoctors(data);
           }
         } else {
@@ -121,7 +121,7 @@ const Doctor = ({navigation}) => {
                     <DoctorCategory
                       key={item.id}
                       category={item.category}
-                      onPress={() => navigation.navigate('ChooseDoctor')}
+                      onPress={() => navigation.navigate('ChooseDoctor', item)}
                     />
                   );
                 })}
@@ -139,7 +139,7 @@ const Doctor = ({navigation}) => {
                   name={doctor.data.fullName}
                   desc={doctor.data.profession}
                   avatar={{uri: doctor.data.photo}}
-                  onPress={() => navigation.navigate('DoctorProfile')}
+                  onPress={() => navigation.navigate('DoctorProfile', doctor)}
                 />
               );
             })}
