@@ -11,6 +11,7 @@ import {
   orderByChild,
   query,
   limitToLast,
+  once,
   equalTo,
 } from 'firebase/database';
 
@@ -32,22 +33,31 @@ const ChooseDoctor = ({navigation, route}) => {
   useEffect(() => {
     callDoctorByCategory(itemCategory.category);
     // return () => {};
-  }, [itemCategory.category]);
-
+  }, []);
 
   const callDoctorByCategory = category => {
     const db = getDatabase();
     //craate variable first
-    const lisCategoryDoctor = query(ref(db, 'doctors/'));
+    const lisCategoryDoctor = query(
+      ref(db, 'doctors/'),
+      orderByChild('category'),
+      equalTo(category),
+    );
+
     //get data
-    get(lisCategoryDoctor, orderByChild('category'), equalTo(category))
+    get(lisCategoryDoctor)
       .then(res => {
         if (res.exists()) {
           if (res.val()) {
+            // console.log('ini list category: ', res.val());
+
             const data = parseArray(res.val());
 
             setListDoctor(data);
             // console.log('data hasil parse: ', data);
+            data.map(item => {
+              console.log('ini data klik: ', item.data.category);
+            });
           }
         } else {
           console.log('No data available');
