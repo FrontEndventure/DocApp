@@ -37,27 +37,22 @@ const ChooseDoctor = ({navigation, route}) => {
 
   const callDoctorByCategory = category => {
     const db = getDatabase();
-    //craate variable first
-    const lisCategoryDoctor = query(
+    // variable listCategoryDoctor
+    const listCategoryDoctor = query(
       ref(db, 'doctors/'),
       orderByChild('category'),
       equalTo(category),
     );
-
     //get data
-    get(lisCategoryDoctor)
+    get(listCategoryDoctor)
       .then(res => {
         if (res.exists()) {
           if (res.val()) {
-            // console.log('ini list category: ', res.val());
-
             const data = parseArray(res.val());
-
             setListDoctor(data);
-            // console.log('data hasil parse: ', data);
-            data.map(item => {
-              console.log('ini data klik: ', item.data.category);
-            });
+            // data.map(item => {
+            //   console.log('ini data klik: ', item.data.category);
+            // });
           }
         } else {
           console.log('No data available');
@@ -83,28 +78,11 @@ const ChooseDoctor = ({navigation, route}) => {
             profile={{uri: doctor.data.photo}}
             name={doctor.data.fullName}
             desc={doctor.data.gender}
-            onPress={() => navigation.navigate('Chatting')}
+            onPress={() => navigation.navigate('DoctorProfile', doctor)}
           />
         );
       })}
-      {/* <List
-        type="next"
-        profile={DummyDoctor1}
-        name="Alexander Grahambel"
-        desc="Wanita"
-      />
-      <List
-        type="next"
-        profile={DummyDoctor1}
-        name="Alexander Grahambel"
-        desc="Wanita"
-      />
-      <List
-        type="next"
-        profile={DummyDoctor1}
-        name="Alexander Grahambel"
-        desc="Wanita"
-      /> */}
+     
     </View>
   );
 };

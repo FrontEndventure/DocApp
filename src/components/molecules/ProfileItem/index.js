@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontFamily: fonts.primary.normal,
-    colors: colors.text.secondary,
+    color: colors.text.secondary,
     marginBottom: 8,
   },
   value: {

@@ -2,14 +2,13 @@ import {
   child,
   get,
   getDatabase,
-  ref,
+  limitToLast,
   orderByChild,
   query,
-  limitToLast,
+  ref,
 } from 'firebase/database';
 import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import {DummyDoctor1, JSONCategoryDoctor} from '../../assets';
 import {
   DoctorCategory,
   Gap,
@@ -88,7 +87,6 @@ const Doctor = ({navigation}) => {
     get(child(dbRef, `category_doctor/`))
       .then(res => {
         if (res.exists()) {
-          // console.log('ini data: ', res.val().data);
           if (res.val()) {
             setCategoryDoctor(res.val().data);
           }
