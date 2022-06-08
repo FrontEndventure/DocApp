@@ -3,17 +3,15 @@ import React from 'react';
 import {colors, fonts} from '../../../utils';
 import {DummyDoctor9} from '../../../assets';
 
-const Other = () => {
+const Other = ({text, date, photo}) => {
   return (
     <View style={styles.container}>
-      <Image style={styles.avatar} source={DummyDoctor9} />
+      <Image style={styles.avatar} source={photo} />
       <View>
         <View style={styles.chatContent}>
-          <Text style={styles.text}>
-            Ibu Dokter, apakah memakan jeruk tiap hari itu bagus?
-          </Text>
+          <Text style={styles.text}>{text}</Text>
         </View>
-        <Text style={styles.date}>4.20 AM</Text>
+        <Text style={styles.date}>{date}</Text>
       </View>
     </View>
   );
@@ -28,7 +26,6 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     flexDirection: 'row',
     // backgroundColor: 'red',
-    
   },
   chatContent: {
     padding: 12,

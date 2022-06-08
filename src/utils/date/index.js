@@ -1,7 +1,7 @@
 export const getChatTime = date => {
   const hour = date.getHours();
   const minute = date.getMinutes();
-  const date = date.getDate();
+//   const date = date.getDate();
 
   return `${hour}:${minute} ${hour > 12 ? 'PM' : 'AM'}`;
 };
