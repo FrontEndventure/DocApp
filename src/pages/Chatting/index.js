@@ -1,9 +1,16 @@
-import {StyleSheet, Text, View, ScrollView} from 'react-native';
-import React, {useState, useEffect} from 'react';
-import {Button, ChatItem, Header, Input, InputChat} from '../../components';
-import {colors, fonts, getData, showError} from '../../utils';
+import {child, getDatabase, push, ref} from 'firebase/database';
+import React, {useEffect, useState} from 'react';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ChatItem, Header, InputChat} from '../../components';
 import {Fire} from '../../config/Fire';
-import {child, get, getDatabase, push, ref} from 'firebase/database';
+import {
+  colors,
+  fonts,
+  getChatTime,
+  getData,
+  setDateChat,
+  showError,
+} from '../../utils';
 
 const Chatting = ({navigation, route}) => {
   const dataDoctor = route.params;
@@ -21,30 +28,21 @@ const Chatting = ({navigation, route}) => {
   const chatSend = () => {
     console.log('data dikirim : ', chatContent);
     const today = new Date();
-    const hour = today.getHours();
-    const minute = today.getMinutes();
-    const year = today.getFullYear();
-    const month = today.getMonth() + 1;
-    const date = today.getDate();
+
     //kirim ke firebase
-    // console.log('url ke firebase: ', `chatting/${user.uid}_${dataDoctor.data.uid}/allChat/${year}-${month}-${date}`);
     const data = {
       sendBy: user.uid,
-      chatDate: new Date().getTime(),
-      chatTime: `${hour}:${minute} ${hour > 12 ? 'PM' : 'AM'}`,
+      chatDate: today.getTime(),
+      chatTime: getChatTime(today),
       chatContent: chatContent,
     };
-    // dbRef(
-    //   `chatting/${user.uid}_${dataDoctor.data.uid}/allChat/${year}-${month}-${date}`,
-    //   push(data),
-    // );
-    push(
-      child(
-        dbRef,
-        `chatting/${user.uid}_${dataDoctor.data.uid}/allChat/${year}-${month}-${date}`,
-      ),
-      data,
-    )
+
+    const chatID = `${user.uid}_${dataDoctor.data.uid}`;
+
+    
+    const urlFirebase = `chatting/${chatID}/allChat/${setDateChat(today)}`;
+
+    push(child(dbRef, urlFirebase), data)
       .then(res => {
         setChatContent('');
       })
