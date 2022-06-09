@@ -1,7 +1,8 @@
 import {child, getDatabase, push, ref, onValue} from 'firebase/database';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {ChatItem, Header, InputChat} from '../../components';
+import dismissKeyboard from 'react-native-dismiss-keyboard';
 import {Fire} from '../../config/Fire';
 import {
   colors,
@@ -13,6 +14,7 @@ import {
 } from '../../utils';
 
 const Chatting = ({navigation, route}) => {
+  const scrollViewRef = useRef();
   const dataDoctor = route.params;
   const dbRef = ref(getDatabase(Fire));
   const [chatContent, setChatContent] = useState('');
@@ -32,6 +34,7 @@ const Chatting = ({navigation, route}) => {
 
   useEffect(() => {
     getDataUserFromLocal();
+    // handleKeyPress();
     // getDataChatting();
 
     const db = getDatabase();
@@ -64,14 +67,13 @@ const Chatting = ({navigation, route}) => {
 
       // const data = parseArray(snapshot.val());
     });
-  }, []);
+  }, [dataDoctor.data.uid, user.uid]);
 
   const getDataUserFromLocal = () => {
     getData('user').then(res => {
       setUser(res);
     });
   };
-  const getDataChatting = () => {};
 
   const chatSend = () => {
     console.log('data dikirim : ', chatContent);
@@ -100,6 +102,13 @@ const Chatting = ({navigation, route}) => {
     console.log('data untuk dikirim: ', data);
   };
 
+  const handleKeyPress = ({nativeEvent: {key: keyValue}}) => {
+    console.log(keyValue);
+    if (keyValue === 'Enter') {
+      console.log('enter');
+    }
+  };
+
   return (
     <View style={styles.page}>
       <Header
@@ -110,21 +119,28 @@ const Chatting = ({navigation, route}) => {
         onPress={() => navigation.goBack()}
       />
       <View style={styles.content}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          ref={scrollViewRef}
+          onContentSizeChange={() =>
+            scrollViewRef.current.scrollToEnd({animated: true})
+          }>
           {chatData.map(chat => {
             return (
               <View key={chat.id}>
                 <Text style={styles.chatDate}>{chat.id}</Text>
                 {chat.data.map(itemChat => {
+                  const isMe = itemChat.data.sendBy === user.uid;
                   return (
                     <ChatItem
                       key={itemChat.id}
-                      isMe={itemChat.data.sendBy === user.uid}
+                      isMe={isMe}
                       text={itemChat.data.chatContent}
                       date={itemChat.data.chatTime}
+                      photo={isMe ? null : {uri: dataDoctor.data.photo}}
                     />
                   );
-                })}            
+                })}
               </View>
             );
           })}
@@ -135,6 +151,7 @@ const Chatting = ({navigation, route}) => {
         value={chatContent}
         onChangeText={value => setChatContent(value)}
         onButtonPress={chatSend}
+        onKeyPress={handleKeyPress}
       />
     </View>
   );

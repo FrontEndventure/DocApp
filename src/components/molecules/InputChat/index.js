@@ -3,7 +3,7 @@ import React from 'react';
 import {colors, fonts} from '../../../utils';
 import {Button} from '../../atoms';
 
-const InputChat = ({value, onChangeText, onButtonPress}) => {
+const InputChat = ({value, onChangeText, onButtonPress, onKeyPress}) => {
   return (
     <View style={styles.container}>
       <TextInput
@@ -11,6 +11,7 @@ const InputChat = ({value, onChangeText, onButtonPress}) => {
         placeholder="Tulis Pesan untuk nairobi"
         value={value}
         onChangeText={onChangeText}
+        onKeyPress={onKeyPress}
       />
       <Button
         disable={value.length < 1}
@@ -34,5 +35,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: fonts.primary.normal,
     maxHeight: 45,
+    color: colors.text.primary,
   },
 });
