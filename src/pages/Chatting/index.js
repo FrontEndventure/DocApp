@@ -1,4 +1,4 @@
-import {child, getDatabase, push, ref, onValue} from 'firebase/database';
+import {child, getDatabase, push, ref, onValue, set} from 'firebase/database';
 import React, {useEffect, useState, useRef} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {ChatItem, Header, InputChat} from '../../components';
@@ -88,12 +88,29 @@ const Chatting = ({navigation, route}) => {
     };
 
     const chatID = `${user.uid}_${dataDoctor.data.uid}`;
-
     const urlFirebase = `chatting/${chatID}/allChat/${setDateChat(today)}`;
+    const urlMessageUser = `messages/${user.uid}/${chatID}`;
+    const urlMessageDoctor = `messages/${dataDoctor.data.uid}/${chatID}`;
+
+    const dataHistoryChatForUser = {
+      lastContentChat: chatContent,
+      lastChatDate: today.getTime(),
+      uidPartner: dataDoctor.data.uid,
+    };
+
+    const dataHistoryChatForDoctor = {
+      lastContentChat: chatContent,
+      lastChatDate: today.getTime(),
+      uidPartner: user.uid,
+    };
 
     push(child(dbRef, urlFirebase), data)
       .then(res => {
         setChatContent('');
+        //set history for user
+        set(child(dbRef, urlMessageUser), dataHistoryChatForUser);
+        //set history for dataDoctor
+        set(child(dbRef, urlMessageDoctor), dataHistoryChatForDoctor);
       })
       .catch(err => {
         showError(err.message);
