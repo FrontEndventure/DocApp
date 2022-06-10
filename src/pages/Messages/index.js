@@ -1,8 +1,10 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {List} from '../../components';
-import {colors, fonts} from '../../utils';
+import {colors, fonts, getData} from '../../utils';
 import {DummyDoctor4, DummyDoctor5, DummyDoctor6} from '../../assets';
+import {child, getDatabase, push, ref, onValue, set} from 'firebase/database';
+import {Fire} from '../../config/Fire';
 
 const Messages = ({navigation}) => {
   const [doctors, setDoctors] = useState([
@@ -25,19 +27,55 @@ const Messages = ({navigation}) => {
       profile: DummyDoctor6,
     },
   ]);
+  const [user, setUser] = useState({});
+
+  const [historyChat, setHistoryChat] = useState([]);
+
+  useEffect(() => {
+    getDataUserFromLocal();
+    const db = getDatabase();
+
+    const urlHistory = `messages/${user.uid}/`;
+    // const urlMessageDoctor = `messages/${dataDoctor.data.uid}/${chatID}`;
+
+    const dataHistoryChat = ref(db, urlHistory);
+    onValue(dataHistoryChat, snapshot => {
+      if (snapshot.val()) {
+        const oldData = snapshot.val();
+        const newData = [];
+        Object.keys(oldData).map(key => {
+          newData.push({
+            id: key,
+            // data: oldData[key],
+            ...oldData[key],
+          });
+        });
+        console.log('new data history: ', newData);
+        setHistoryChat(newData);
+      }
+
+      // const data = parseArray(snapshot.val());
+    });
+  }, [user.uid]);
+
+  const getDataUserFromLocal = () => {
+    getData('user').then(res => {
+      setUser(res);
+    });
+  };
 
   return (
     <View style={styles.page}>
       <View style={styles.content}>
         <Text style={styles.title}>Messages</Text>
-        {doctors.map(doctor => {
+        {historyChat.map(chat => {
           return (
             <List
-              key={doctor.id}
-              profile={doctor.profile}
-              name={doctor.name}
-              desc={doctor.desc}
-              onPress={() => navigation.navigate('Chatting')}
+              key={chat.id}
+              profile={chat.uidPartner}
+              name={chat.uidPartner}
+              desc={chat.lastContentChat}
+              onPress={() => navigation.navigate('Chatting', chat)}
             />
           );
         })}
