@@ -1,21 +1,21 @@
-import {child, getDatabase, push, ref, onValue, set} from 'firebase/database';
-import React, {useEffect, useState, useRef} from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import {ChatItem, Header, InputChat} from '../../components';
-import dismissKeyboard from 'react-native-dismiss-keyboard';
-import {Fire} from '../../config/Fire';
+import { child, getDatabase, onValue, push, ref, set } from 'firebase/database';
+import React, { useEffect, useRef, useState } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ChatItem, Header, InputChat } from '../../components';
+import { Fire } from '../../config/Fire';
 import {
   colors,
   fonts,
   getChatTime,
   getData,
   setDateChat,
-  showError,
+  showError
 } from '../../utils';
 
 const Chatting = ({navigation, route}) => {
   const scrollViewRef = useRef();
   const dataDoctor = route.params;
+  // const dataChat = route.params;
   const dbRef = ref(getDatabase(Fire));
   const [chatContent, setChatContent] = useState('');
   const [user, setUser] = useState({});
