@@ -34,7 +34,6 @@ const Chatting = ({navigation, route}) => {
 
   useEffect(() => {
     getDataUserFromLocal();
-    // handleKeyPress();
     // getDataChatting();
 
     const db = getDatabase();
@@ -62,7 +61,7 @@ const Chatting = ({navigation, route}) => {
           });
         });
         setChatData(allDataChat);
-        // console.log('ini datakuy: ', allDataChat);
+        console.log('ini chat: ', allDataChat);
       }
 
       // const data = parseArray(snapshot.val());
@@ -143,9 +142,11 @@ const Chatting = ({navigation, route}) => {
             scrollViewRef.current.scrollToEnd({animated: true})
           }>
           {chatData.map(chat => {
+            console.log('chat date:', `${chat.id.substring(0,4)}-${chat.id.substring(4,5)}-${chat.id.substring(5)}`)
+            const tanggal = `${chat.id.substring(0,4)}-${chat.id.substring(4,5)}-${chat.id.substring(5)}`
             return (
               <View key={chat.id}>
-                <Text style={styles.chatDate}>{chat.id}</Text>
+                <Text style={styles.chatDate}>{tanggal}</Text>
                 {chat.data.map(itemChat => {
                   const isMe = itemChat.data.sendBy === user.uid;
                   return (
@@ -168,7 +169,7 @@ const Chatting = ({navigation, route}) => {
         value={chatContent}
         onChangeText={value => setChatContent(value)}
         onButtonPress={chatSend}
-        onKeyPress={handleKeyPress}
+        // onKeyPress={handleKeyPress}
       />
     </View>
   );

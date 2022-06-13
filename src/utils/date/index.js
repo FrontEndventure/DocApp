@@ -11,5 +11,5 @@ export const setDateChat = oldDate => {
   const month = oldDate.getMonth() + 1;
   const date = oldDate.getDate();
 
-  return `${year}-${month}-${date}`;
+  return `${year}${month}${date}`;
 };

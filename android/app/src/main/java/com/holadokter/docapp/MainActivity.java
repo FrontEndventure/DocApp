@@ -1,4 +1,4 @@
-package com.docapp;
+package com.holadokter.docapp;
 
 import com.facebook.react.ReactActivity;
 

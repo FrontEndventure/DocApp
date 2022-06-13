@@ -20,7 +20,7 @@ const GetStarted = ({navigation}) => {
       <View>
         <Button
           title="Get Started"
-          onPress={() => navigation.navigate(Register)}
+          onPress={() => navigation.navigate('Register')}
         />
         <Gap height={16} />
         <Button
